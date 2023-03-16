@@ -1,6 +1,8 @@
 //import * as fs from 'fs';
 //const fs = require('fs');
 const http = require('http');
+const path = require('path');
+const url = require('url');
 //import * as http from 'http';
 
 //////////////////////////////////////////////////////////
@@ -34,7 +36,21 @@ const http = require('http');
 /////////////////////////////////////////////////////
 //Server
 const server = http.createServer((request, response) => {
-    response.end('Hello from the server');
+    //console.log(request.url);
+
+    const pathName = request.url;
+    if(pathName === '/' || pathName === '/overview') {
+        response.end('This is the OVERVIEW');
+    } else if (pathName === '/product') {
+        response.end('This is a PRODUCT');
+    } else {
+        response.writeHead(404, {
+            'Content-type': 'text/html',
+            'my-own-header': 'hello-world'
+        });
+        response.end('<h1>Page not FOUND!!!</h1>');
+    }
+    //response.end('Hello from the server');
 })
 
 //A port is a sub address on an host
