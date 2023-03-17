@@ -1,5 +1,5 @@
 //import * as fs from 'fs';
-//const fs = require('fs');
+const fs = require('fs');
 const http = require('http');
 const path = require('path');
 const url = require('url');
@@ -35,14 +35,40 @@ const url = require('url');
 
 /////////////////////////////////////////////////////
 //Server
+
+
 const server = http.createServer((request, response) => {
     //console.log(request.url);
+
+
+    const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
+    const dataObject = JSON.parse(data);
+
+
 
     const pathName = request.url;
     if(pathName === '/' || pathName === '/overview') {
         response.end('This is the OVERVIEW');
     } else if (pathName === '/product') {
         response.end('This is a PRODUCT');
+    } else if(pathName === '/api'){
+        //Building a simple API
+
+        //Async method
+        // fs.readFile(`${__dirname}/dev-data/data.json`, 'utf-8', (err, data) => {
+        //     //const productData = JSON.parse(data);
+        //     response.writeHead(200, {
+        //         'Content-type': 'application/json'
+        //     });
+        //     response.end(data);
+
+        // });
+
+        response.writeHead(200, {
+            'Content-type': 'application/json'
+        });
+        response.end(data);
+
     } else {
         response.writeHead(404, {
             'Content-type': 'text/html',
