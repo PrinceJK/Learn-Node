@@ -52,80 +52,90 @@ const replaceTemplate = require('./modules/replaceTemplate');
 //     return output;
 // }
 
-
-const tempOverview = fs.readFileSync(`${__dirname}/templates/template-overview.html`, 'utf-8');
-const tempCard = fs.readFileSync(`${__dirname}/templates/template-card.html`, 'utf-8');
-const tempProduct = fs.readFileSync(`${__dirname}/templates/template-product.html`, 'utf-8');
+const tempOverview = fs.readFileSync(
+  `${__dirname}/templates/template-overview.html`,
+  'utf-8'
+);
+const tempCard = fs.readFileSync(
+  `${__dirname}/templates/template-card.html`,
+  'utf-8'
+);
+const tempProduct = fs.readFileSync(
+  `${__dirname}/templates/template-product.html`,
+  'utf-8'
+);
 
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
 const dataObject = JSON.parse(data);
 
-const slugs = dataObject.map(el => slugify(el.productName, {lower:true}));
+const slugs = dataObject.map((el) => slugify(el.productName, { lower: true }));
 console.log(slugs);
 
-console.log(slugify('Fresh Avocado', {
-    lower:true
-}))
+console.log(
+  slugify('Fresh Avocado', {
+    lower: true,
+  })
+);
 
 const server = http.createServer((request, response) => {
-    //console.log(request.url);
-    //console.log(url.parse(request.url, true));
+  //console.log(request.url);
+  //console.log(url.parse(request.url, true));
 
-    const {query, pathname} = url.parse(request.url, true);
-    //const pathname = request.url;
+  const { query, pathname } = url.parse(request.url, true);
+  //const pathname = request.url;
 
-    //Overview Page
-    if(pathname === '/' || pathname === '/overview') {
-        response.writeHead(200, {
-            'Content-type': 'text/html'
-        });
-        const cardshtml = dataObject.map(el => replaceTemplate(tempCard, el)).join('');
-        const output = tempOverview.replace('{%PRODUCT_CARDS%}', cardshtml);
-        
-        response.end(output);
+  //Overview Page
+  if (pathname === '/' || pathname === '/overview') {
+    response.writeHead(200, {
+      'Content-type': 'text/html',
+    });
+    const cardshtml = dataObject
+      .map((el) => replaceTemplate(tempCard, el))
+      .join('');
+    const output = tempOverview.replace('{%PRODUCT_CARDS%}', cardshtml);
+
+    response.end(output);
 
     // Product Page
-    } else if (pathname === '/product') {
-        response.writeHead(200, {
-            'Content-type': 'text/html'
-        });
-        const product = dataObject[query.id];
-        const output = replaceTemplate(tempProduct, product);
-        response.end(output);
+  } else if (pathname === '/product') {
+    response.writeHead(200, {
+      'Content-type': 'text/html',
+    });
+    const product = dataObject[query.id];
+    const output = replaceTemplate(tempProduct, product);
+    response.end(output);
 
     //api
-    } else if(pathname === '/api'){
-        //Building a simple API
+  } else if (pathname === '/api') {
+    //Building a simple API
 
-        //Async method
-        // fs.readFile(`${__dirname}/dev-data/data.json`, 'utf-8', (err, data) => {
-        //     //const productData = JSON.parse(data);
-        //     response.writeHead(200, {
-        //         'Content-type': 'application/json'
-        //     });
-        //     response.end(data);
+    //Async method
+    // fs.readFile(`${__dirname}/dev-data/data.json`, 'utf-8', (err, data) => {
+    //     //const productData = JSON.parse(data);
+    //     response.writeHead(200, {
+    //         'Content-type': 'application/json'
+    //     });
+    //     response.end(data);
 
-        // });
+    // });
 
-        response.writeHead(200, {
-            'Content-type': 'application/json'
-        });
-        response.end(data);
+    response.writeHead(200, {
+      'Content-type': 'application/json',
+    });
+    response.end(data);
     //Not found
-    } else {
-        response.writeHead(404, {
-            'Content-type': 'text/html',
-            'my-own-header': 'hello-world'
-        });
-        response.end('<h1>Page not FOUND!!!</h1>');
-    }
-    //response.end('Hello from the server');
-})
+  } else {
+    response.writeHead(404, {
+      'Content-type': 'text/html',
+      'my-own-header': 'hello-world',
+    });
+    response.end('<h1>Page not FOUND!!!</h1>');
+  }
+  //response.end('Hello from the server');
+});
 
 //A port is a sub address on an host
 //port, host
 server.listen(8000, '127.0.0.1', () => {
-    console.log('Listening to request on port 8000')
-})
-
-
+  console.log('Listening to request on port 8000');
+});
