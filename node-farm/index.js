@@ -60,10 +60,13 @@ const dataObject = JSON.parse(data);
 
 const server = http.createServer((request, response) => {
     //console.log(request.url);
-    const pathName = request.url;
+    //console.log(url.parse(request.url, true));
+
+    const {query, pathname} = url.parse(request.url, true);
+    //const pathname = request.url;
 
     //Overview Page
-    if(pathName === '/' || pathName === '/overview') {
+    if(pathname === '/' || pathname === '/overview') {
         response.writeHead(200, {
             'Content-type': 'text/html'
         });
@@ -73,11 +76,16 @@ const server = http.createServer((request, response) => {
         response.end(output);
 
     // Product Page
-    } else if (pathName === '/product') {
-        response.end('This is a PRODUCT');
+    } else if (pathname === '/product') {
+        response.writeHead(200, {
+            'Content-type': 'text/html'
+        });
+        const product = dataObject[query.id];
+        const output = replaceTemplate(tempProduct, product);
+        response.end(output);
 
     //api
-    } else if(pathName === '/api'){
+    } else if(pathname === '/api'){
         //Building a simple API
 
         //Async method
