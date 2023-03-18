@@ -1,0 +1,30 @@
+{
+  "name": "node-farm",
+  "version": "1.0.0",
+  "description": "Learning node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PrinceJK/Learn-Node.git"
+  },
+  "keywords": [
+    "nodejs",
+    "javascript"
+  ],
+  "author": "John Kehinde",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PrinceJK/Learn-Node/issues"
+  },
+  "homepage": "https://github.com/PrinceJK/Learn-Node#readme",
+  "dependencies": {
+    "slugify": "^1.6.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.21"
+  }
+}
